@@ -1,0 +1,1 @@
+console.log("o hai, this is the content script");

@@ -16,16 +16,29 @@
         height: 75px;
       }
     </style>
-
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
       - Policy documentation[1] for details and explanation.
       -
       - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
      -->
-    <script src="popup.js"></script>
+    <!-- <script type="text/javascript" src="jquery.min.js"></script> -->
+    <script type="text/javascript" src="popup.js"></script>
   </head>
   <body>
+    <h2> simfy player controls</h2>
+    <table>
+      <thead>
+      </thead>
+      <tbody>
+        <tr>
+          <td> <button id="simfy_prev">previous</button> </td>
+          <td> <button id="simfy_play">play</button> </td>
+          <td> <button id="simfy_next">next</button> </td>
+        </tr>
+      </tbody>
+    </table>
+
   </body>
 </html>
 
