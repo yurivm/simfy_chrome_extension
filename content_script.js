@@ -1,7 +1,4 @@
-console.log("o hai, this is the content script");
-
 var playToggle = function() {
-  console.log("togglePlayer()");
   if (Core.EI.player_is_playing) {
     Core.EI.pausePlayback();
   } else {
@@ -10,12 +7,10 @@ var playToggle = function() {
 };
 
 var playNext = function() {
-    console.log("playNext()");
     Core.EI.playNext();
 };
 
 var playPrevious = function() {
-    console.log("playPrevious()");
     Core.EI.playPrevious();
 };
 
@@ -27,12 +22,8 @@ var injectScriptFunction = function(func) {
   script.parentNode.removeChild(script);
 }
 
-
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    console.log(sender.tab ?
-                "from a content script:" + sender.tab.url :
-                "from the extension");
     var ack = request.command;
     switch(request.command) {
       case "PLAY_NEXT":

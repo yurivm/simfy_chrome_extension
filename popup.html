@@ -4,16 +4,17 @@
     <title>Simfy Player</title>
     <style>
       body {
-        min-width: 357px;
-        overflow-x: hidden;
+        min-width: 230px;
+        /* overflow-x: hidden; */
+        background-color: #202020;
       }
-
-      img {
-        margin: 5px;
-        border: 2px solid black;
-        vertical-align: middle;
-        width: 75px;
-        height: 75px;
+      div {
+        text-align: center;
+      }
+      div img {
+        margin:0 auto; 
+        display:inline-block;
+        vertical-align:middle;
       }
     </style>
     <!--
@@ -26,19 +27,12 @@
     <script type="text/javascript" src="popup.js"></script>
   </head>
   <body>
-    <h2> simfy player controls</h2>
-    <table>
-      <thead>
-      </thead>
-      <tbody>
-        <tr>
-          <td> <button id="simfy_prev">previous</button> </td>
-          <td> <button id="simfy_play">play</button> </td>
-          <td> <button id="simfy_next">next</button> </td>
-        </tr>
-      </tbody>
-    </table>
-
+    <div>
+      <img src="img/logo.png" />
+      <img id="simfy_prev" src="img/previous.png" />
+      <img id="simfy_play" src="img/play_big.png" />
+      <img id="simfy_next" src="img/next.png" />
+    </div>
   </body>
 </html>
 
