@@ -14,7 +14,7 @@
     {
       "matches": ["http://www.simfy.de/*"],
       //"css": ["mystyles.css"],
-      "js": ["jquery.min.js", "content_script.js"]
+      "js": ["jquery.min.js", "underscore-min.js", "content_script.js"]
     }
   ],
 
@@ -24,5 +24,8 @@
     "http://www.simfy.com/*",
     "http://localhost:3000/*",
     "http://www.simfy.de/*"
+  ],
+  "web_accessible_resources": [
+    "underscore-min.map"
   ]
 }
