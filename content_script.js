@@ -20,11 +20,7 @@ var onNewTrack = function(artist_name, track_title, track_version_title, album_t
 
 var injectScriptFunction = function(func) {
   var script = document.createElement('script');
-  if (_.isString(func) ) {
-    script.textContent = func;
-  } else {
-    script.textContent = '(' + func + ')()';
-  }
+  script.textContent = (_.isString(func)) ? func : '(' + func + ')()';
   (document.head||document.documentElement).appendChild(script);
   script.parentNode.removeChild(script);
 }
@@ -59,7 +55,6 @@ window.addEventListener("message", function(event) {
     return;
 
   if (event.data.type && (event.data.type == "SIMFY_NEW_TRACK")) {
-    //console.log("Content script received: " + event.data.track_title + " by " + event.data.artist_name);
     chrome.runtime.sendMessage(event.data, function(response) {
       //  console.log(response.ack);
     });

@@ -1,21 +1,9 @@
 var simfyConnector = (function () {
 
   var setTrackInfo = function(request) {
-    console.log("setting : " + request.track_title + " " + request.artist_name);
-    localStorage.track_title = request.track_title;
-    localStorage.artist_name = request.artist_name;
-  }
-
-  var getTrackInfo = function() {
-    console.log("reading");
-    var tt = localStorage.track_title;
-    var an = localStorage.artist_name;
-    console.log(tt);
-    console.log(an);
-    return {
-      track_title: tt,
-      artist_name: an
-    }
+    chrome.storage.local.set({simfy_track_info:request}, function() {
+      //console.log("yes we did store the track info");
+    });
   }
 
   return {
@@ -50,19 +38,14 @@ var simfyConnector = (function () {
     },
 
     refreshTrackInfo: function() {
-      info = getTrackInfo();
-      $('span.track_title').html(info.track_title);
-      $('span.track_artist_name').html(" von " + info.artist_name);
+      chrome.storage.local.get("simfy_track_info", function(value) {
+        if (!_.isEmpty(value) && !_.isUndefined(value.simfy_track_info)) {
+          $('span.track_title').html(value.simfy_track_info.track_title);
+          $('span.track_artist_name').html(" von " + value.simfy_track_info.artist_name);
+        }
+      });
     },
 
-    trackTitle: function() {
-      return currentTrackTitle;
-    },
-
-    isTrackInfoDefined: function() {
-      info = getTrackInfo();
-      return (!_.isUndefined(info.track_title) && !_.isUndefined(info.artist_name));
-    },
   };
 
 })();
@@ -73,20 +56,14 @@ $(document).ready(function() {
   $("#simfy_play").click(simfyConnector.playToggle);
 });
 
-// 
-
-if (simfyConnector.isTrackInfoDefined()) {
-  simfyConnector.refreshTrackInfo();
-}
+// display the last played track info
+simfyConnector.refreshTrackInfo();
 
 //receive new track messages from the content script
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.type == "SIMFY_NEW_TRACK") {
-      // $('span.track_title').html(request.track_title);
-      // $('span.track_artist_name').html(" von " + request.artist_name);
       simfyConnector.updateTrackInfo(request);
-      //$("#simfy_song").html(request.track_title + " von " + request.artist_name + " (" + request.length + ")");  
       sendResponse({ack: "SIMFY_NEW_TRACK"});
     }
     
