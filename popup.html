@@ -4,6 +4,7 @@
     <title>Simfy Player</title>
     <style>
       body {
+        padding-top: 4px;
         min-width: 250px;
         background-color: #303030;
       }
@@ -20,6 +21,39 @@
         margin:0 auto; 
         display:inline-block;
         vertical-align:middle;
+      }
+      a.play_button {
+        display:inline-block;
+        background:transparent url('img/blue_default.png') center top no-repeat;
+        text-decoration:none;
+        width: 42px;
+        height: 42px;        
+      }
+      a.play_button:hover {
+        background-image: url('img/blue_hover.png');
+      }
+      a.play_button:active {
+        background-image: url('img/blue_active.png'); 
+      }
+      a.play_button img {
+        padding-top: 8px;
+        padding-left: 4px;
+      }
+      a.gray_button {
+        display:inline-block;
+        background:transparent url('img/gray_default.png') center top no-repeat;
+        text-decoration:none;
+        width: 32px;
+        height: 32px;
+      }
+      a.gray_button:hover {
+        background-image: url('img/gray_hover.png');
+      }
+      a.gray_button:active {
+        background-image: url('img/gray_active.png'); 
+      }
+      a.gray_button img {
+        padding-top: 10px;
       }
       span.track_artist_name {
         color: #909090;
@@ -38,9 +72,9 @@
   <body>
     <div>
       <img src="img/logo.png" />
-      <img id="simfy_prev" src="img/previous.png" />
-      <img id="simfy_play" src="img/play_big.png" />
-      <img id="simfy_next" src="img/next.png" />
+      <a id="simfy_prev" class="gray_button"><img src="img/icon_prev_default.png"></a>
+      <a id="simfy_play" class="play_button" data-play-status="paused"><img src="img/icon_play_default.png"></a>
+      <a id="simfy_next" class="gray_button"><img src="img/icon_next_default.png"></a>
     </div>
     <div id="simfy_track"><span class="track_title"></span> <span class="track_artist_name"></span></div>
   </body>
