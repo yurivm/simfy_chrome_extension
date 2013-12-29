@@ -26,7 +26,16 @@ var simfyConnector = (function () {
     playToggle: function() {
       chrome.tabs.query({url: "*://www.simfy.de/*"}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {command: "PLAY_TOGGLE"}, function(response) {
+          //TODO switch play/pause status
   //      console.log("reply form the content script: " + response.ack);
+          // var status = $('#simfy_play').attr('data-play-status');
+          // if (status == 'paused') {
+          //   $('#simfy_play').html('<img src="img/icon_pause_default.png">');
+          //   $('#simfy_play').attr('data-play-status', 'playing');
+          // } else if (status == 'playing') {
+          //   $('#simfy_play').html('<img src="img/icon_play_default.png">');
+          //   $('#simfy_play').attr('data-play-status', 'paused');
+          // }
         });
       });
     },
