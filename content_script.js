@@ -21,7 +21,7 @@ var onNewTrack = function(artist_name, track_title, track_version_title, album_t
 var simfyExtensionStatusChecker = null;
 
 var playerStatusCheck = function() {
-  setInterval(function() {
+  simfyExtensionStatusChecker = setInterval(function() {
     window.postMessage({type: "SIMFY_PLAYER_IS_PLAYING", value: Core.EI.player_is_playing}, "*");
   }, 500);
 };
@@ -36,6 +36,7 @@ var injectScriptFunction = function(func) {
 //inject our own on New Track listener
 injectScriptFunction("Core.EI.call_newActiveTrack = " + onNewTrack );
 //ping the player periodically
+injectScriptFunction("var simfyExtensionStatusChecker = null;");
 injectScriptFunction(playerStatusCheck);
 
 chrome.runtime.onMessage.addListener(
