@@ -1,10 +1,12 @@
 var simfyConnector = (function () {
 
+  var isPlayingNow = false;
+
   var setTrackInfo = function(request) {
     chrome.storage.local.set({simfy_track_info:request}, function() {
       //console.log("yes we did store the track info");
     });
-  }
+  };
 
   return {
     playNext: function() {
@@ -54,7 +56,13 @@ var simfyConnector = (function () {
         }
       });
     },
-
+    setIsPlayingNow: function(value) {
+      if (value != isPlayingNow) {
+        var img_src = (value) ? "img/icon_pause_default.png" : "img/icon_play_default.png";
+        $("#simfy_play img").attr("src", img_src);
+        isPlayingNow = value;
+      }
+    }
   };
 
 })();
@@ -74,6 +82,8 @@ chrome.runtime.onMessage.addListener(
     if (request.type == "SIMFY_NEW_TRACK") {
       simfyConnector.updateTrackInfo(request);
       sendResponse({ack: "SIMFY_NEW_TRACK"});
+    } else if (request.type == "SIMFY_PLAYER_IS_PLAYING") {
+      simfyConnector.setIsPlayingNow(request.value);
     }
     
   });
