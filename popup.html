@@ -35,9 +35,19 @@
       a.play_button:active {
         background-image: url('img/blue_active.png'); 
       }
-      a.play_button img {
-        padding-top: 8px;
-        padding-left: 4px;
+      a.play_button img.play {
+        width: 22px;
+        height:21px;
+        margin-top: 8px;
+        margin-left: 3px;        
+        background:url('img/play_icons.png') 0 0;
+      }
+      a.play_button img.pause {
+        width: 22px;
+        height:20px;
+        margin-top: 8px;
+        margin-right: 2px;      
+        background:url('img/play_icons.png') -22px 0;
       }
       a.gray_button {
         display:inline-block;
@@ -73,7 +83,7 @@
     <div>
       <img src="img/logo.png" />
       <a id="simfy_prev" class="gray_button"><img src="img/icon_prev_default.png"></a>
-      <a id="simfy_play" class="play_button" data-play-status="paused"><img src="img/icon_play_default.png"></a>
+      <a id="simfy_play" class="play_button" data-play-status="paused"><img class="play" src="img/dot.png"></a>
       <a id="simfy_next" class="gray_button"><img src="img/icon_next_default.png"></a>
     </div>
     <div id="simfy_track"><span class="track_title"></span> <span class="track_artist_name"></span></div>
