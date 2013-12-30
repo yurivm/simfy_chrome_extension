@@ -59,7 +59,13 @@ var simfyConnector = (function () {
     setIsPlayingNow: function(value) {
       if (value != isPlayingNow) {
         var img_src = (value) ? "img/icon_pause_default.png" : "img/icon_play_default.png";
+        console.log("is playing now:" + value);
+        var badge_text = (value) ? "PLAY" : "STOP";
+        var background_color = (value) ? "#0B610B" : "#8A0808";
         $("#simfy_play img").attr("src", img_src);
+        chrome.browserAction.setBadgeText({text: badge_text});
+        chrome.browserAction.setBadgeText({text: badge_text});
+        chrome.browserAction.setBadgeBackgroundColor({color: background_color});
         isPlayingNow = value;
       }
     }
