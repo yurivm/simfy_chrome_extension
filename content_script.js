@@ -1,30 +1,41 @@
-var playToggle = function() {
-  if (Core.EI.player_is_playing) {
-    Core.EI.pausePlayback();
-  } else {
-    Core.EI.resumePlayback();
-  }
-};
+var playerControlFunctions = (function(){
+  return {
+    playToggle: function() {
+      if (Core.EI.player_is_playing) {
+        Core.EI.pausePlayback();
+      } else {
+        Core.EI.resumePlayback();
+      }
+    },
+    playNext: function() {
+      Core.EI.playNext();
+    },
+    playPrevious: function() {
+      Core.EI.playPrevious();
+    },
+    onNewTrack: function(artist_name, track_title, track_version_title, album_title, track_id, album_id, length) {
+        window.postMessage({ type: "SIMFY_NEW_TRACK", artist_name: artist_name, track_title: track_title, track_version_title: track_version_title, album_title: album_title, track_id: track_id, album_id: album_id, length: length }, "*");
+    },
 
-var playNext = function() {
-    Core.EI.playNext();
-};
+  };
 
-var playPrevious = function() {
-    Core.EI.playPrevious();
-};
+})();
 
-var onNewTrack = function(artist_name, track_title, track_version_title, album_title, track_id, album_id, length) {
-  window.postMessage({ type: "SIMFY_NEW_TRACK", artist_name: artist_name, track_title: track_title, track_version_title: track_version_title, album_title: album_title, track_id: track_id, album_id: album_id, length: length }, "*");
-};
+var playerTimerFunctions = (function() {
+  return {
+    playerStatusCheck: function() {
+      simfyExtensionStatusChecker = setInterval(function() {
+        window.postMessage({type: "SIMFY_PLAYER_IS_PLAYING", value: Core.EI.player_is_playing}, "*");
+      }, 500);
+    },
+    resetStatusCheck: function() {
+      if (typeof simfyExtensionStatusChecker != "undefined") {
+        clearInterval(simfyExtensionStatusChecker);
+      }
+    }
 
-var simfyExtensionStatusChecker = null;
-
-var playerStatusCheck = function() {
-  simfyExtensionStatusChecker = setInterval(function() {
-    window.postMessage({type: "SIMFY_PLAYER_IS_PLAYING", value: Core.EI.player_is_playing}, "*");
-  }, 500);
-};
+  };
+})();
 
 var injectScriptFunction = function(func) {
   var script = document.createElement('script');
@@ -34,23 +45,25 @@ var injectScriptFunction = function(func) {
 };
 
 //inject our own on New Track listener
-injectScriptFunction("Core.EI.call_newActiveTrack = " + onNewTrack );
+injectScriptFunction("Core.EI.call_newActiveTrack = " + playerControlFunctions.onNewTrack );
+//remove the status checker if it existed previously
+injectScriptFunction(playerTimerFunctions.resetStatusCheck);
 //ping the player periodically
 injectScriptFunction("var simfyExtensionStatusChecker = null;");
-injectScriptFunction(playerStatusCheck);
+injectScriptFunction(playerTimerFunctions.playerStatusCheck);
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     var ack = request.command;
     switch(request.command) {
-      case "PLAY_NEXT":
-        injectScriptFunction(playNext);
+      case "SIMFY_PLAY_NEXT":
+        injectScriptFunction(playerControlFunctions.playNext);
         break;
-      case "PLAY_PREVIOUS":
-        injectScriptFunction(playPrevious);
+      case "SIMFY_PLAY_PREVIOUS":
+        injectScriptFunction(playerControlFunctions.playPrevious);
         break;
-      case "PLAY_TOGGLE":
-        injectScriptFunction(playToggle);
+      case "SIMFY_PLAY_TOGGLE":
+        injectScriptFunction(playerControlFunctions.playToggle);
         break;
       default:
         ack = "WHARRGARBL";
