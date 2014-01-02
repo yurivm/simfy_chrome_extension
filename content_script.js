@@ -7,12 +7,8 @@ var playerControlFunctions = (function(){
         Core.EI.resumePlayback();
       }
     },
-    playNext: function() {
-      Core.EI.playNext();
-    },
-    playPrevious: function() {
-      Core.EI.playPrevious();
-    },
+    playNext: function() { Core.EI.playNext(); },
+    playPrevious: function() { Core.EI.playPrevious(); },
     onNewTrack: function(artist_name, track_title, track_version_title, album_title, track_id, album_id, length) {
         window.postMessage({ type: "SIMFY_NEW_TRACK", artist_name: artist_name, track_title: track_title, track_version_title: track_version_title, album_title: album_title, track_id: track_id, album_id: album_id, length: length }, "*");
     },
@@ -20,7 +16,7 @@ var playerControlFunctions = (function(){
   };
 
 })();
-
+// I would gladly use alarms. But Chrome limits alarms to at most once every 1 minute. 
 var playerTimerFunctions = (function() {
   return {
     playerStatusCheck: function() {
