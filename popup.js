@@ -15,11 +15,6 @@ var simfyConnector = (function () {
     playPrevious: function() { sendCommandToSimfyTab("SIMFY_PLAY_PREVIOUS"); },
     playToggle: function() { sendCommandToSimfyTab("SIMFY_PLAY_TOGGLE"); },
 
-    updateTrackInfo: function(request) {
-      $('span.track_title').html(request.track_title);
-      $('span.track_artist_name').html(" by " + request.artist_name);
-    },
-
     refreshTrackInfo: function() {
       chrome.runtime.getBackgroundPage(function(wnd) {
         var trackInfo = wnd.state.getTrackInfo();
@@ -53,12 +48,10 @@ simfyConnector.refreshTrackInfo();
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.type == "SIMFY_NEW_TRACK") {
-      console.log("popup received SIMFY_NEW_TRACK");
-      simfyConnector.updateTrackInfo(request);
+      simfyConnector.refreshTrackInfo();
       sendResponse({ack: "SIMFY_NEW_TRACK"});
     } else if (request.type == "SIMFY_PLAYER_IS_PLAYING") {
       simfyConnector.setIsPlayingNow(request.value);
-      console.log("popup received SIMFY_PLAYER_IS_PLAYING");
     }
     
   });
