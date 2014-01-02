@@ -26,12 +26,9 @@ var state = (function() {
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if (request.type == "SIMFY_NEW_TRACK") {
-      //store the track 
       state.setTrackInfo(request);
-      console.log("event page received SIMFY_NEW_TRACK");
     } else if (request.type == "SIMFY_PLAYER_IS_PLAYING") {
       state.setIsPlayingNow(request.value);
-      console.log("event page received SIMFY_PLAYER_IS_PLAYING");
       var background_color = (request.value) ? "#0B610B" : "#8A0808";
       var badge_text = (request.value) ? "PLAY" : "STOP";
       chrome.browserAction.setBadgeText({text: badge_text});
