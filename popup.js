@@ -2,34 +2,22 @@ var simfyConnector = (function () {
 
   var isPlayingNow = false;
 
+  var sendCommandToSimfyTab = function(cmd) {
+      chrome.tabs.query({url: "*://www.simfy.de/*"}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {command: cmd}, function(response) {
+  //        console.log("reply form the content script: " + response.ack);
+        });
+      });    
+  };
+
   return {
-    playNext: function() {
-      chrome.tabs.query({url: "*://www.simfy.de/*"}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {command: "SIMFY_PLAY_NEXT"}, function(response) {
-  //        console.log("reply form the content script: " + response.ack);
-        });
-      });
-    },
-
-    playPrevious: function() {
-      chrome.tabs.query({url: "*://www.simfy.de/*"}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {command: "SIMFY_PLAY_PREVIOUS"}, function(response) {
-  //        console.log("reply form the content script: " + response.ack);
-        });
-      });
-    },
-
-    playToggle: function() {
-      chrome.tabs.query({url: "*://www.simfy.de/*"}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {command: "SIMFY_PLAY_TOGGLE"}, function(response) {
-          //TODO switch play/pause status
-        });
-      });
-    },
+    playNext: function() { sendCommandToSimfyTab("SIMFY_PLAY_NEXT"); },
+    playPrevious: function() { sendCommandToSimfyTab("SIMFY_PLAY_PREVIOUS"); },
+    playToggle: function() { sendCommandToSimfyTab("SIMFY_PLAY_TOGGLE"); },
 
     updateTrackInfo: function(request) {
       $('span.track_title').html(request.track_title);
-      $('span.track_artist_name').html(" von " + request.artist_name);
+      $('span.track_artist_name').html(" by " + request.artist_name);
     },
 
     refreshTrackInfo: function() {
@@ -37,7 +25,7 @@ var simfyConnector = (function () {
         var trackInfo = wnd.state.getTrackInfo();
         if (!_.isEmpty(trackInfo.track_title) && !_.isEmpty(trackInfo.artist_name)) {
           $('span.track_title').html(trackInfo.track_title);
-          $('span.track_artist_name').html(" von " + trackInfo.artist_name);          
+          $('span.track_artist_name').html(" by " + trackInfo.artist_name);          
         }
       });
     },
