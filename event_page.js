@@ -27,6 +27,8 @@ chrome.runtime.onMessage.addListener(
       chrome.browserAction.setTitle({title: title});
     } else if (request.type == "SIMFY_PLAYER_IS_PLAYING") {
       state.setIsPlayingNow(request.value);
+      // var iconPath = (request.value) ? "img/icon_play_2_38.png" : "img/icon_pause_2_38.png";
+      // chrome.browserAction.setIcon({path: iconPath});
       var background_color = (request.value) ? "#0B610B" : "#8A0808";
       var badge_text = (request.value) ? "PLAY" : "STOP";
       chrome.browserAction.setBadgeText({text: badge_text});
