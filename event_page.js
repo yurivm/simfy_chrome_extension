@@ -1,6 +1,7 @@
 var state = (function() {
   var isPlayingNow = false;
-  
+  var extensionEnabled = true;
+
   return {
     setTrackInfo: function(trackInfo) {
       localStorage['trackInfo.track_title'] = trackInfo.track_title;
@@ -13,7 +14,27 @@ var state = (function() {
       };
     },
     setIsPlayingNow: function(ispn) { isPlayingNow = ispn; },
-    getIsPlayingNow: function() { return isPlayingNow; }
+    getIsPlayingNow: function() { return isPlayingNow; },
+    enableExtension: function() { 
+      extensionEnabled = true; 
+      chrome.browserAction.setIcon({path: "img/icon_19.png"});
+    },
+    disableExtension: function() { 
+      extensionEnabled = false; 
+      chrome.browserAction.setIcon({path: "img/icon_19_disabled.png"});
+    },
+    isExtensionEnabled: function() {
+      return extensionEnabled;
+    },
+    checkIfSimfyTabIsOpen: function(tab) {
+      chrome.tabs.query({url: "*://www.simfy.de/*"}, function(tabs) {
+        if (tabs.length == 0) {
+          state.disableExtension();
+        } else {
+          state.enableExtension();
+        }
+      });      
+    }
   };
 })();
 
@@ -39,3 +60,17 @@ chrome.runtime.onMessage.addListener(
     }
     
 });
+
+//keep track of the simfy tab and disable the icon if it is absent
+state.checkIfSimfyTabIsOpen();
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+  if (tab.status == "complete") {
+    state.checkIfSimfyTabIsOpen();
+  }
+});
+
+chrome.tabs.onRemoved.addListener(function(tabId, removeInfo){
+  state.checkIfSimfyTabIsOpen();
+});
+
