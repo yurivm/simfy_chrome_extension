@@ -9,6 +9,10 @@ var simfyConnector = (function () {
         });
       });    
   };
+  var setPlayButtonClass = function(isPlaying) {
+    var img_class = (isPlaying) ? "pause" : "play";
+    $("#simfy_play img").attr("class", img_class);
+  };
 
   return {
     playNext: function() { sendCommandToSimfyTab("SIMFY_PLAY_NEXT"); },
@@ -24,10 +28,16 @@ var simfyConnector = (function () {
         }
       });
     },
+    refreshIsPlayingNow: function() {
+      chrome.runtime.getBackgroundPage(function(wnd) {
+        var isPlayingNow = wnd.state.getIsPlayingNow();
+        setPlayButtonClass(isPlayingNow);
+      });
+    },
+
     setIsPlayingNow: function(value) {
       if (value != isPlayingNow) {
-        var img_class = (value) ? "pause" : "play";
-        $("#simfy_play img").attr("class", img_class);
+        setPlayButtonClass(value);
         isPlayingNow = value;
       }
     }
@@ -43,6 +53,10 @@ $(document).ready(function() {
 
 // display the last played track info
 simfyConnector.refreshTrackInfo();
+// refresh the play button state
+simfyConnector.refreshIsPlayingNow();
+//check if the extension is enabled
+
 
 //receive new track messages from the content script
 chrome.runtime.onMessage.addListener(
