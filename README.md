@@ -30,3 +30,10 @@ Chrome Permissions
 
 * Tabs : to be able to find the simfy tab
 * Storage: to store the currently played track. Only stored locally and is of no risk, even if you feel paranoid today.
+
+
+Disclaimer
+-----
+
+* This is free stuff that is not guaranteed to work
+* Use at your own risk
