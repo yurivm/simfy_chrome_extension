@@ -20,6 +20,11 @@ What you need
 * A valid [simfy](http://www.simfy.de/) Premium/PremiumPlus account
 * Chrome
 
+Installation
+-----
+
+* Visit [Google Web Store](https://chrome.google.com/webstore/detail/simfy-player-controls/nphffjmbkejenhnkgfjfhccnnllkmaja)
+
 Chrome Permissions
 -----
 
